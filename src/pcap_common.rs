@@ -60,8 +60,8 @@ pub struct PCapPacketHeader {
     pub len: c_uint,
     //some documentation suggest that this additional field should be present on MAC os.
     //but the main documentation seems to state something different.
-    //#[cfg(target_os="macos")]
-    //pub comment: [c_char; 256]
+    #[cfg(target_os="macos")]
+    pub comment: [c_char; 256]
 }
 
 ///Equivalent of C struct timeval_t
