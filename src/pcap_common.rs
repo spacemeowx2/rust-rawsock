@@ -53,7 +53,7 @@ pub struct PCapInterface {
 
 ///Equivalent of C struct pcap_pkthdr
 #[repr(C)]
-#[derive(Copy, Clone, Debug)]
+#[derive(Copy, Clone)]
 pub struct PCapPacketHeader {
     pub ts: TimeVal,
     pub caplen: c_uint,
@@ -62,6 +62,12 @@ pub struct PCapPacketHeader {
     //but the main documentation seems to state something different.
     #[cfg(target_os="macos")]
     pub comment: [c_char; 256]
+}
+
+impl std::fmt::Display for PCapPacketHeader {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
+        write!(f, "ts: {:?}, caplen: {}, len: {}", &self.ts, &self.caplen, &self.len)
+    }
 }
 
 ///Equivalent of C struct timeval_t
