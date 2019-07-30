@@ -78,6 +78,7 @@ extern crate libc;
 extern crate time;
 
 pub mod pcap;
+#[cfg(windows)]
 pub mod wpcap;
 pub mod pfring;
 pub mod traits;

@@ -71,7 +71,6 @@ impl<'a> traits::Interface<'a> for Interface<'a> {
             len: packet.len() as c_uint,
             caplen: packet.len() as c_uint,
             ts: unsafe{uninitialized()},
-            comment: unsafe{uninitialized()},
         };
 
         let err = unsafe{self.dll.pcap_sendqueue_queue(self.queue, &header, packet.as_ptr())};

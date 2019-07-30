@@ -5,7 +5,9 @@ mod data_link;
 mod err;
 
 use crate::traits::Library;
-use crate::{wpcap, pcap, pfring};
+use crate::{pcap, pfring};
+#[cfg(windows)]
+use crate::wpcap;
 
 
 pub use self::lib_version::LibraryVersion;
@@ -36,8 +38,11 @@ pub fn open_best_library() -> Result<Box<dyn Library>, Error> {
     if let Ok(l) = pfring::Library::open_default_paths() {
         return Ok(Box::new(l));
     }
-    if let Ok(l) = wpcap::Library::open_default_paths() {
-        return Ok(Box::new(l));
+    #[cfg(windows)]
+    {
+        if let Ok(l) = wpcap::Library::open_default_paths() {
+            return Ok(Box::new(l));
+        }
     }
     match pcap::Library::open_default_paths() {
         Ok(l) => Ok(Box::new(l)),
