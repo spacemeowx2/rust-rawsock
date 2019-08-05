@@ -12,8 +12,8 @@ pub fn borrowed_packet_from_header<'a, 'b>(header: &'a PCapPacketHeader, data: *
     }
 }
 
-pub extern "C" fn on_received_packet<F>(user: * mut c_uchar, h: * const PCapPacketHeader, bytes: * const c_uchar) where F: FnMut(&BorrowedPacket){
-    let callback: &mut F = unsafe{transmute(user)};
+pub extern "C" fn on_received_packet(user: * mut c_uchar, h: * const PCapPacketHeader, bytes: * const c_uchar) {
+    let callback: &mut Box<&mut FnMut(&BorrowedPacket)> = unsafe{transmute(user)};
 
     let packet = borrowed_packet_from_header(unsafe{&*h}, bytes);
     callback(&packet)
